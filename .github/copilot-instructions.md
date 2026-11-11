@@ -27,3 +27,5 @@ Ce fichier est lu automatiquement par Copilot quand il travaille sur ce dépôt.
 - Dis comment vérifier le résultat dans le navigateur, avec les touches ou les clics à faire.
 - Si ma demande est ambiguë, pose une question avant d'écrire du code.
 - Après une modification JavaScript, lance `node --check` sur le fichier touché.
+- Thème : arcade néon avec cristaux cyan, dorés et de glace; le bouclier est cyan.
+- Règles : les cristaux rapportent des points et un bouclier actif absorbe la prochaine bombe attrapée.

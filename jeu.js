@@ -10,7 +10,7 @@ const elementNiveau = document.getElementById("niveau");
 const elementCombo = document.getElementById("combo");
 const elementComboValeur = document.getElementById("combo-valeur");
 const elementComboJauge = document.getElementById("combo-jauge");
-const elementVies = document.getElementById("vies").getElementsByTagName("i");
+const elementVies = document.getElementById("vies").getElementsByTagName("i"); const elementBouclier = document.getElementById("bouclier");
 const boutonSon = document.getElementById("bouton-son");
 const boutonJouer = document.getElementById("bouton-jouer");
 const boutonRejouer = document.getElementById("bouton-rejouer");
@@ -21,12 +21,13 @@ const badgeRecord = document.getElementById("badge-record");
 // L'état de la partie.
 let etat = "titre";
 let score = 0;
+let cristaux = 0;
 let record = 0;
 let vies = REGLAGES.viesDepart;
 let niveau = 1;
 let tempsJeu = 0;
 let combo = 0;
-let chronoCombo = 0;
+let chronoCombo = 0, chronoGlace = 0, bouclier = true;
 let objets = [];
 let chronoSpawn = 0;
 let dernierTemps = 0;
@@ -43,7 +44,7 @@ function multiplicateur() {
   return Math.min(REGLAGES.multiplicateurMax, 1 + Math.floor(combo / 3));
 }
 function majHud() {
-  elementScore.textContent = score;
+  elementScore.textContent = score; elementBouclier.textContent = "BOUCLIER : " + (bouclier ? "ACTIF" : "UTILISÉ");
   elementNiveau.textContent = "NIVEAU " + niveau;
   elementComboValeur.textContent = "x" + multiplicateur();
   elementCombo.classList.toggle("fort", multiplicateur() > 1);
@@ -56,7 +57,8 @@ function majHud() {
 function demarrerPartie() {
   preparerAudio();
   etat = "jeu";
-  score = 0; vies = REGLAGES.viesDepart; niveau = 1; tempsJeu = 0;
+  score = 0; vies = REGLAGES.viesDepart; bouclier = true; niveau = 1; tempsJeu = 0; chronoGlace = 0;
+  cristaux = 0;
   combo = 0; chronoCombo = 0; objets = []; chronoSpawn = 0.45;
   panier.x = LARGEUR / 2 - panier.largeur / 2; panier.cibleX = null; panier.vitesse = 0;
   ecranTitre.classList.add("cache");
@@ -73,6 +75,8 @@ function terminerPartie() {
   secouer(20);
   flasher(COULEURS.blanc, 0.4);
   finScore.textContent = score;
+  //afficher le nombre de cristaux attrapés sur l'écran de fin dans finScore
+finScore.textContent += " | CRISTAUX : " + cristaux;
   finRecord.textContent = record;
   badgeRecord.classList.toggle("cache", !nouveauRecord);
   scene.dataset.etat = "fin";
@@ -84,8 +88,9 @@ function creerObjet() {
   const tirage = Math.random();
   let type = CRISTAL;
   if (tirage < Math.min(0.42, REGLAGES.hasardBombe + (niveau - 1) * 0.03)) type = BOMBE;
-  else if (tirage > 1 - REGLAGES.hasardDore) type = DORE;
-  const rayon = type === DORE ? 17 : type === BOMBE ? 15 : 13;
+  else if (tirage > 1 - REGLAGES.hasardGlace) type = GLACE;
+  else if (tirage > 1 - REGLAGES.hasardGlace - REGLAGES.hasardDore) type = DORE;
+  const rayon = type === GLACE ? 15 : type === DORE ? 17 : type === BOMBE ? 15 : 13;
   const vitesse = Math.min(REGLAGES.vitesseChuteMax, REGLAGES.vitesseChute + (niveau - 1) * 28);
   objets.push({
     type: type, x: hasard(rayon + 12, LARGEUR - rayon - 12), y: -rayon - 8, rayon: rayon,
@@ -114,7 +119,8 @@ function estAttrape(objet) {
 function toucherObjet(objet) {
   if (objet.type === BOMBE) {
     creerParticules(objet.x, objet.y, COULEURS.magenta, 28, 320);
-    perdreVie(objet.x, objet.y, true);
+    
+    if (bouclier) { bouclier = false; ajouterTexte(objet.x, objet.y - 10, "BOUCLIER", COULEURS.cyan); sonBombe(); flasher(COULEURS.cyan, 0.12); } else perdreVie(objet.x, objet.y, true);
     return;
   }
   combo += 1;
@@ -123,6 +129,11 @@ function toucherObjet(objet) {
   const points = (objet.type === DORE ? 50 : 10) * multi;
   const couleur = objet.type === DORE ? COULEURS.or : COULEURS.cyan;
   score += points;
+  // compte les cristaux attrapés dans la variable cristaux
+  if (objet.type === CRISTAL) {
+    cristaux += 1;
+  }
+  if (objet.type === GLACE) { chronoGlace = REGLAGES.dureeGlace; ajouterTexte(objet.x, objet.y - 10, "RALENTI", COULEURS.glace); }
   creerParticules(objet.x, objet.y, couleur, objet.type === DORE ? 24 : 14, 280);
   ajouterTexte(objet.x, objet.y - 10, "+" + points, couleur);
   if (objet.type === DORE) { sonDore(); flasher(COULEURS.or, 0.18); }
@@ -146,7 +157,7 @@ function mettreAJour(dt) {
   mettreAJourEffets(dt);
   if (etat !== "jeu") return;
 
-  tempsJeu += dt;
+  tempsJeu += dt; chronoGlace = Math.max(0, chronoGlace - dt);
   const nouveauNiveau = 1 + Math.floor(tempsJeu / REGLAGES.dureeNiveau);
   if (nouveauNiveau > niveau) {
     niveau = nouveauNiveau;
@@ -166,7 +177,8 @@ function mettreAJour(dt) {
   }
   for (let i = objets.length - 1; i >= 0; i--) {
     const objet = objets[i];
-    objet.y += objet.vitesse * dt;
+    objet.y += objet.vitesse * dt * (chronoGlace > 0 ? REGLAGES.facteurGlace : 1);
+
     objet.rotation += objet.vitesseRotation * dt;
     if (objet.type === DORE && Math.random() < dt * 18) {
       creerParticules(objet.x, objet.y, COULEURS.or, 1, 30);
