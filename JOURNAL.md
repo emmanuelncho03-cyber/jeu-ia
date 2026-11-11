@@ -22,10 +22,12 @@ Règle : tu colles ici le texte exact de tes prompts (copier-coller, pas de capt
 
 ## Défi 2 - Ask
 
-- Ma question (prompt exact) :
-Question 1 :Je suis en Bachelor 1, j'ai fait un peu de Go. Explique jeu.js : comment fonctionnent la boucle du jeu, la chute des objets et la détection de l'objet attrapé ? Une phrase par partie.
+- Mes questions (prompts exacts) :
 
+```
+Question 1 :Je suis en Bachelor 1, j'ai fait un peu de Go. Explique jeu.js : comment fonctionnent la boucle du jeu, la chute des objets et la détection de l'objet attrapé ? Une phrase par partie.
 Question 2: comment le combo est-il remis à zéro ?
+```
 
 - Une affirmation de la réponse que j'ai vérifiée : Le combo est remis à zéro lorsque le joueur perd une vie ou lorsque le chronomètre du combo arrive à zéro.
 
