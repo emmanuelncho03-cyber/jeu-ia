@@ -38,14 +38,14 @@ Les instructions existent bien dans le code, mais je n'ai pas réussi à confirm
 
 ## Défi 3 - Plan
 
-- Mon prompt en mode Plan :
+- Mon prompt en mode Plan (texte exact) :
 
 ```
-(colle-le ici)
+Je veux ajouter un cristal de glace, plus rare que le doré. Quand on l'attrape, tous les objets ralentissent pendant 4 secondes, puis reprennent leur vitesse. Respecte les règles de .github/copilot-instructions.md. Propose un plan sans modifier le code.
 ```
 
 - Le plan est dans le fichier `PLAN.md`.
-- Ce que j'ai changé dans le plan avant de le valider (étape retirée, ajoutée, contrainte) et pourquoi :
+- Ce que j'ai changé dans le plan avant de le valider (étape retirée, ajoutée, contrainte) et pourquoi : J'ai retiré l'indicateur du HUD car il n'est pas demandé. J'ai ajouté la contrainte de garder les réglages dans `config.js` et une vérification dans le jeu.
 
 ## Défi 4 - Agent
 
