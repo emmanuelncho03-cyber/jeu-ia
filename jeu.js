@@ -10,7 +10,7 @@ const elementNiveau = document.getElementById("niveau");
 const elementCombo = document.getElementById("combo");
 const elementComboValeur = document.getElementById("combo-valeur");
 const elementComboJauge = document.getElementById("combo-jauge");
-const elementVies = document.getElementById("vies").getElementsByTagName("i");
+const elementVies = document.getElementById("vies").getElementsByTagName("i"); const elementBouclier = document.getElementById("bouclier");
 const boutonSon = document.getElementById("bouton-son");
 const boutonJouer = document.getElementById("bouton-jouer");
 const boutonRejouer = document.getElementById("bouton-rejouer");
@@ -27,7 +27,7 @@ let vies = REGLAGES.viesDepart;
 let niveau = 1;
 let tempsJeu = 0;
 let combo = 0;
-let chronoCombo = 0, chronoGlace = 0;
+let chronoCombo = 0, chronoGlace = 0, bouclier = true;
 let objets = [];
 let chronoSpawn = 0;
 let dernierTemps = 0;
@@ -44,7 +44,7 @@ function multiplicateur() {
   return Math.min(REGLAGES.multiplicateurMax, 1 + Math.floor(combo / 3));
 }
 function majHud() {
-  elementScore.textContent = score;
+  elementScore.textContent = score; elementBouclier.textContent = "BOUCLIER : " + (bouclier ? "ACTIF" : "UTILISÉ");
   elementNiveau.textContent = "NIVEAU " + niveau;
   elementComboValeur.textContent = "x" + multiplicateur();
   elementCombo.classList.toggle("fort", multiplicateur() > 1);
@@ -57,7 +57,7 @@ function majHud() {
 function demarrerPartie() {
   preparerAudio();
   etat = "jeu";
-  score = 0; vies = REGLAGES.viesDepart; niveau = 1; tempsJeu = 0; chronoGlace = 0;
+  score = 0; vies = REGLAGES.viesDepart; bouclier = true; niveau = 1; tempsJeu = 0; chronoGlace = 0;
   cristaux = 0;
   combo = 0; chronoCombo = 0; objets = []; chronoSpawn = 0.45;
   panier.x = LARGEUR / 2 - panier.largeur / 2; panier.cibleX = null; panier.vitesse = 0;
@@ -119,7 +119,8 @@ function estAttrape(objet) {
 function toucherObjet(objet) {
   if (objet.type === BOMBE) {
     creerParticules(objet.x, objet.y, COULEURS.magenta, 28, 320);
-    perdreVie(objet.x, objet.y, true);
+    
+    if (bouclier) { bouclier = false; ajouterTexte(objet.x, objet.y - 10, "BOUCLIER", COULEURS.cyan); sonBombe(); flasher(COULEURS.cyan, 0.12); } else perdreVie(objet.x, objet.y, true);
     return;
   }
   combo += 1;
@@ -177,6 +178,7 @@ function mettreAJour(dt) {
   for (let i = objets.length - 1; i >= 0; i--) {
     const objet = objets[i];
     objet.y += objet.vitesse * dt * (chronoGlace > 0 ? REGLAGES.facteurGlace : 1);
+
     objet.rotation += objet.vitesseRotation * dt;
     if (objet.type === DORE && Math.random() < dt * 18) {
       creerParticules(objet.x, objet.y, COULEURS.or, 1, 30);

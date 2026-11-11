@@ -52,13 +52,13 @@ Je veux ajouter un cristal de glace, plus rare que le doré. Quand on l'attrape,
 - Mon prompt en mode Agent :
 
 ```
-(colle-le ici)
+Applique PLAN.md. Quand tu as fini, relis tes changements fichier par fichier et vérifie le cristal de glace dans le jeu.
 ```
 
-- Fichiers que l'agent a modifiés :
-- Ce que j'ai relu dans les changements avant d'accepter :
-- Ce que j'ai refusé, corrigé ou fait refaire :
-- Mon jeu après l'agent (une phrase) :
+- Fichiers que l'agent a modifiés : config.js, dessin.js, jeu.js, index.html et .github/copilot-instructions.md.
+- Ce que j'ai relu dans les changements avant d'accepter : J'ai vérifié dans le code que le cristal de glace est plus rare que le doré et ralentit tout pendant 4 secondes; que le bouclier est réinitialisé au début et absorbe la première bombe attrapée; et que le bloc du Défi 1 est resté inchangé.
+- Ce que j'ai refusé, corrigé ou fait refaire : J'ai ajouté un flash cyan au bouclier, car le texte seul se voyait peu.
+- Mon jeu après l'agent (une phrase) : Le cristal de glace ralentit tous les objets et le bouclier absorbe une bombe par partie.
 
 ## Défi 5 - Pull request et revue
 
