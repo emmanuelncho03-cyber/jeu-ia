@@ -27,7 +27,7 @@ let vies = REGLAGES.viesDepart;
 let niveau = 1;
 let tempsJeu = 0;
 let combo = 0;
-let chronoCombo = 0;
+let chronoCombo = 0, chronoGlace = 0;
 let objets = [];
 let chronoSpawn = 0;
 let dernierTemps = 0;
@@ -57,7 +57,7 @@ function majHud() {
 function demarrerPartie() {
   preparerAudio();
   etat = "jeu";
-  score = 0; vies = REGLAGES.viesDepart; niveau = 1; tempsJeu = 0;
+  score = 0; vies = REGLAGES.viesDepart; niveau = 1; tempsJeu = 0; chronoGlace = 0;
   cristaux = 0;
   combo = 0; chronoCombo = 0; objets = []; chronoSpawn = 0.45;
   panier.x = LARGEUR / 2 - panier.largeur / 2; panier.cibleX = null; panier.vitesse = 0;
@@ -88,8 +88,9 @@ function creerObjet() {
   const tirage = Math.random();
   let type = CRISTAL;
   if (tirage < Math.min(0.42, REGLAGES.hasardBombe + (niveau - 1) * 0.03)) type = BOMBE;
-  else if (tirage > 1 - REGLAGES.hasardDore) type = DORE;
-  const rayon = type === DORE ? 17 : type === BOMBE ? 15 : 13;
+  else if (tirage > 1 - REGLAGES.hasardGlace) type = GLACE;
+  else if (tirage > 1 - REGLAGES.hasardGlace - REGLAGES.hasardDore) type = DORE;
+  const rayon = type === GLACE ? 15 : type === DORE ? 17 : type === BOMBE ? 15 : 13;
   const vitesse = Math.min(REGLAGES.vitesseChuteMax, REGLAGES.vitesseChute + (niveau - 1) * 28);
   objets.push({
     type: type, x: hasard(rayon + 12, LARGEUR - rayon - 12), y: -rayon - 8, rayon: rayon,
@@ -131,6 +132,7 @@ function toucherObjet(objet) {
   if (objet.type === CRISTAL) {
     cristaux += 1;
   }
+  if (objet.type === GLACE) { chronoGlace = REGLAGES.dureeGlace; ajouterTexte(objet.x, objet.y - 10, "RALENTI", COULEURS.glace); }
   creerParticules(objet.x, objet.y, couleur, objet.type === DORE ? 24 : 14, 280);
   ajouterTexte(objet.x, objet.y - 10, "+" + points, couleur);
   if (objet.type === DORE) { sonDore(); flasher(COULEURS.or, 0.18); }
@@ -154,7 +156,7 @@ function mettreAJour(dt) {
   mettreAJourEffets(dt);
   if (etat !== "jeu") return;
 
-  tempsJeu += dt;
+  tempsJeu += dt; chronoGlace = Math.max(0, chronoGlace - dt);
   const nouveauNiveau = 1 + Math.floor(tempsJeu / REGLAGES.dureeNiveau);
   if (nouveauNiveau > niveau) {
     niveau = nouveauNiveau;
@@ -174,7 +176,7 @@ function mettreAJour(dt) {
   }
   for (let i = objets.length - 1; i >= 0; i--) {
     const objet = objets[i];
-    objet.y += objet.vitesse * dt;
+    objet.y += objet.vitesse * dt * (chronoGlace > 0 ? REGLAGES.facteurGlace : 1);
     objet.rotation += objet.vitesseRotation * dt;
     if (objet.type === DORE && Math.random() < dt * 18) {
       creerParticules(objet.x, objet.y, COULEURS.or, 1, 30);
