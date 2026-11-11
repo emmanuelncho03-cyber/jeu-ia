@@ -33,7 +33,7 @@ const REGLAGES = {
   multiplicateurMax: 5,
   hasardBombe: 0.14,
   hasardDore: 0.05,
-  hasardGlace: 0.4,
+  hasardGlace: 0.02,
   dureeGlace: 4,
   facteurGlace: 0.45,
   largeurPanier: 96,
