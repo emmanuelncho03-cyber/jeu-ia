@@ -1,12 +1,26 @@
-- Ce que j'ai accepté, modifié ou refusé, et pourquoi : J'ai accepté la premiere proposition concernant le comptage des cristaux. J'ai refusé la deuxieme proposé et modifié avec finScore.textContent += " | CRISTAUX : " + cristaux;
+# Journal de bord
 
+Nom et prénom : Yao N'Cho Emmanuel
+Dépôt : https://github.com/emmanuelncho03-cyber/jeu-ia
+Outil utilisé (Copilot, modèle affiché) : Copilot
+
+Règle : tu colles ici le texte exact de tes prompts (copier-coller, pas de capture). Une entrée par défi. Ce que tu n'as pas gardé compte autant que ce que tu as gardé.
+
+## Défi 1 - Complétion
+
+- Commentaire ou début de code que j'ai écrit :
+// compte les cristaux attrapés dans la variable cristaux
+//afficher le nombre de cristaux attrapés sur l'écran de fin dans finScore
+
+- Ce que Copilot a proposé : //Pour compte les cristaux, Copilot a proposé - if (objet.type === CRISTAL) {
+    cristaux += 1;
+  }
+
+- Ce que j'ai accepté, modifié ou refusé, et pourquoi : J'ai accepté la premiere proposition concernant le comptage des cristaux. J'ai refusé la deuxieme proposé et modifié avec finScore.textContent += " | CRISTAUX : " + cristaux;
 
 - Comment j'ai vérifié que ça marche : J'ai testé sur le jeu, il affiche le nombre de cristaux a la fin
 
-
 ## Défi 2 - Ask
-
-
 - Mes questions (prompts exacts) :
 
 
@@ -56,6 +70,9 @@ Applique PLAN.md. Quand tu as fini, relis tes changements fichier par fichier et
 - Ce que j'ai relu dans les changements avant d'accepter : J'ai vérifié dans le code que le cristal de glace est plus rare que le doré et ralentit tout pendant 4 secondes; que le bouclier est réinitialisé au début et absorbe la première bombe attrapée; et que le bloc du Défi 1 est resté inchangé.
 - Ce que j'ai refusé, corrigé ou fait refaire : J'ai ajouté un flash cyan au bouclier, car le texte seul se voyait peu.
 - Mon jeu après l'agent (une phrase) : Le cristal de glace ralentit tous les objets et le bouclier absorbe une bombe par partie.
+
+
+- Deuxième prompt du Défi 4 : le texte exact n’a pas été conservé dans l’historique disponible. Il demandait un bouclier visible dans le HUD qui absorbe la prochaine bombe attrapée, dans le thème néon.
 
 
 ## Défi 5 - Pull request et revue

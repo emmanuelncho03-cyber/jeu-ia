@@ -2,6 +2,11 @@
 
 Jeu d'arcade web en HTML, CSS et JavaScript pour le cours Outils IA, Bachelor 1, Ynov. Ce dépôt est la base de départ des défis GitHub Copilot : le jeu fonctionne déjà, à toi de l'améliorer.
 
+
+## Jouer en ligne
+
+https://emmanuelncho03-cyber.github.io/jeu-ia/
+
 ## Le but
 
 Déplace le rail néon en bas de l'écran et attrape les cristaux qui tombent. Évite les bombes. Enchaîne les prises pour faire monter le multiplicateur.
