@@ -1,34 +1,38 @@
 # Journal de bord
 
-Nom et prénom : 
-Dépôt : 
-Outil utilisé (Copilot, modèle affiché) : 
+Nom et prénom : Yao N'Cho Emmanuel
+Dépôt : https://github.com/emmanuelncho03-cyber/jeu-ia
+Outil utilisé (Copilot, modèle affiché) : Copilot
 
 Règle : tu colles ici le texte exact de tes prompts (copier-coller, pas de capture). Une entrée par défi. Ce que tu n'as pas gardé compte autant que ce que tu as gardé.
 
 ## Défi 1 - Complétion
 
 - Commentaire ou début de code que j'ai écrit :
+// compte les cristaux attrapés dans la variable cristaux
+//afficher le nombre de cristaux attrapés sur l'écran de fin dans finScore
 
-```
-(colle-le ici)
-```
+- Ce que Copilot a proposé : //Pour compte les cristaux, Copilot a proposé - if (objet.type === CRISTAL) {
+    cristaux += 1;
+  }
 
-- Ce que Copilot a proposé :
-- Ce que j'ai accepté, modifié ou refusé, et pourquoi :
-- Comment j'ai vérifié que ça marche :
+- Ce que j'ai accepté, modifié ou refusé, et pourquoi : J'ai accepté la premiere proposition concernant le comptage des cristaux. J'ai refusé la deuxieme proposé et modifié avec finScore.textContent += " | CRISTAUX : " + cristaux;
+
+- Comment j'ai vérifié que ça marche : J'ai testé sur le jeu, il affiche le nombre de cristaux a la fin
 
 ## Défi 2 - Ask
 
 - Ma question (prompt exact) :
+Question 1 :Je suis en Bachelor 1, j'ai fait un peu de Go. Explique jeu.js : comment fonctionnent la boucle du jeu, la chute des objets et la détection de l'objet attrapé ? Une phrase par partie.
 
-```
-(colle-le ici)
-```
+Question 2: comment le combo est-il remis à zéro ?
 
-- Une affirmation de la réponse que j'ai vérifiée :
-- Comment je l'ai vérifiée (un changement dans le code, un test dans le jeu) :
-- Résultat : exacte, fausse ou incomplète :
+- Une affirmation de la réponse que j'ai vérifiée : Le combo est remis à zéro lorsque le joueur perd une vie ou lorsque le chronomètre du combo arrive à zéro.
+
+- Comment je l'ai vérifiée (un changement dans le code, un test dans le jeu) : J'ai recherché les instructions chronoCombo-= dt et combo = 0 dans jeu.js. J'ai ensuite ajouté un console.log() dans la condition concernée, lancé le jeu et observé la console du navigateur après avoir rejoué. Le message ne s'est pas affiché.
+
+- Résultat : exacte, fausse ou incomplète : incomplète.
+Les instructions existent bien dans le code, mais je n'ai pas réussi à confirmer leur déclenchement réel pendant mon test.
 
 ## Défi 3 - Plan
 
